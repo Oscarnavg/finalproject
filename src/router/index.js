@@ -1,36 +1,31 @@
+import App from "../App.vue"
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from '../views/Home.vue';
-import Login from '../views/Login.vue';
-import Register from '../views/Register.vue';
-import Dashboard from '../views/Dashboard.vue';
-import NotFound from '../views/NotFound.vue';
-
+import Notes from '../views/Notes.vue';
+import Auths3 from '../views/LogIn.vue'
+import Profile from '../views/Profile.vue'
+ 
 const routes = [
-  { path: '/', component: Home },
-  { path: '/login', component: Login },
-  { path: '/register', component: Register },
-  { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
-  { path: '/:pathMatch(.*)*', name: 'NotFound', component: NotFound }
+  {
+    path: '/',
+    name: 'Home',
+    component: Auths3
+  },
+  {
+    path: '/notes',
+    name: 'Notes',
+    component: Notes,
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+  }
 ];
-
+ 
 const router = createRouter({
-  history: createWebHistory(),
-  routes
+  history: createWebHistory(import.meta.env.VITE_APP_ENV),
+  routes,
 });
-
+ 
 export default router;
-
-router.beforeEach(async (to, from, next) => {
-  const auth = useAuthStore()
-
-  if (!auth.user) {
-    await auth.fetchUser()
-  }
-
-  if (to.meta.requiresAuth && !auth.user) {
-    next('/login')
-  } else {
-    next()
-  }
-})
 
