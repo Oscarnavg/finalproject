@@ -19,3 +19,18 @@ const router = createRouter({
 });
 
 export default router;
+
+router.beforeEach(async (to, from, next) => {
+  const auth = useAuthStore()
+
+  if (!auth.user) {
+    await auth.fetchUser()
+  }
+
+  if (to.meta.requiresAuth && !auth.user) {
+    next('/login')
+  } else {
+    next()
+  }
+})
+
