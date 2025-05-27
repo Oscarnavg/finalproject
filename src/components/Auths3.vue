@@ -1,100 +1,60 @@
 <template>
-  <div>
-    <!-- Background -->
-    <div
-      class="bg-dark bg-gradient text-center shadow-1-strong rounded text-white"
-    >
-      <div class="d-flex col-md-6 mx-auto"></div>
+  <div class="background">
+    <section class="auth-section">
+      <div class="auth-container">
+        <div class="form-section">
+          <div class="glass-card">
+            <div class="card-body">
+              <h2 class="title">Sign in</h2>
+              <p class="subtitle">
+                "Put yourself at the top of your <br />
+                To Do List"
+              </p>
 
-      <!-- Section: Design Block 1 -->
-      <section class="text-center text-lg-start p-3">
-        <!-- Jumbotron -->
-        <div class="container py-4">
-          <div class="row g-0 align-items-center justify-content-center">
-            <div class="col-lg-6 mb-5 mb-lg-0">
-              <div
-                class="card cascading-right"
-                style="
-                  background: hsla(0, 0%, 100%, 0.55);
-                  backdrop-filter: blur(30px);
-                "
-              >
-                <div class="card-body p-5 shadow-5 text-center">
-                  <h2 class="fw-bold mb-4">Sign in</h2>
-                  <p class="mb-5 fw-bold text-warning">
-                    "Put yourself at the top of your <br />
-                    To Do List"
-                  </p>
-
-                  <form @submit.prevent="handleLogin">
-                    <!-- Email input -->
-                    <div class="form-outline mb-4">
-                      <input
-                        type="email"
-                        id="form1Example4"
-                        class="form-control"
-                        placeholder="name@example.com"
-                        v-model="email"
-                      />
-                      <label class="form-label" for="form1Example4"
-                        >Email address</label
-                      >
-                    </div>
-
-                    <!-- Submit button -->
-                    <button
-                      type="submit"
-                      class="btn btn-warning btn-block mb-4"
-                      :value="loading ? 'Loading' : 'Send magic link'"
-                      :disabled="loading"
-                    >
-                      Send magic link
-                    </button>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="bg-img bg-image w-50 rounded-4 shadow-4 col-lg-6 mb-5 mb-lg-0 image align-items-center justify-content-center"
-              style="
-                background-image:url('/src/assets/unnamed.png');
-                height: 100vh;
-                width: 100vh;
-                background-size: auto 100%;
-                background-repeat: no-repeat;
-              "
-            >
-              <div class="bd-highlight d-flex flex-column align-items-center">
-                <!-- Nuevo contenedor circular para el logo -->
-                <div class="logo-container">
-                  <img
-                    src="/src/assets/logocheckme.png"
-                    alt="CheckMe logo"
-                    class="logo"
+              <form @submit.prevent="handleLogin">
+                <div class="form-group">
+                  <input
+                    type="email"
+                    id="email"
+                    class="form-input"
+                    placeholder="name@example.com"
+                    v-model="email"
                   />
+                  <label class="form-label" for="email">Email address</label>
                 </div>
 
-                <h1 class="fw-bold bd-highlight text-black text-center m-4">
-                  Bringing a true feeling<br />
-                  to your every day tasks.
-                </h1>
-                <h4 class="fw-bold text-center m-5">
-                  Check.me organize your tasks <br />
-                  in one easy-to-use app.
-                </h4>
-              </div>
+                <button
+                  type="submit"
+                  class="submit-button"
+                  :value="loading ? 'Loading' : 'Send magic link'"
+                  :disabled="loading"
+                >
+                  Send magic link
+                </button>
+              </form>
             </div>
           </div>
         </div>
-        <!-- Jumbotron -->
-      </section>
-      <!-- Section: Design Block 1 -->
-    </div>
-    <!-- Background -->
+
+        <div class="image-section">
+          <div class="image-content">
+            <div class="logo-container">
+              <img src="/src/assets/logocheckme.png" alt="CheckMe logo" class="logo" />
+            </div>
+            <h1 class="headline">
+              Bringing a true feeling<br />
+              to your every day tasks.
+            </h1>
+            <h4 class="description">
+              Check.me organize your tasks <br />
+              in one easy-to-use app.
+            </h4>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 </template>
-  
 
 <script>
 import { ref } from "vue";
@@ -110,7 +70,7 @@ export default {
         loading.value = true;
         const { error } = await supabase.auth.signIn({ email: email.value });
         if (error) throw error;
-        swal("","Check your email for the login link!", "success");
+        swal("", "Check your email for the login link!", "success");
       } catch (error) {
         swal(error.error_description || error.message);
       } finally {
@@ -127,49 +87,154 @@ export default {
 };
 </script>
 
-<style>
-.logo-container {
+<style scoped>
+/* Layout base */
+.background {
+  background-color: #1c1c1e;
+  color: white;
+  padding: 2rem;
+}
+
+.auth-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Form section */
+.form-section {
+  flex: 1 1 500px;
+  display: flex;
+  justify-content: center;
+}
+
+.glass-card {
+  background: hsla(0, 0%, 100%, 0.55);
+  backdrop-filter: blur(30px);
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.card-body {
+  text-align: center;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-weight: bold;
+  color: #ffc107;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+}
+
+.form-label {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Submit button */
+.submit-button {
+  background-color: #ffc107;
+  color: black;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 100%;
+}
+
+.submit-button:disabled {
+  background-color: #e0a800;
+  cursor: not-allowed;
+}
+
+/* Image section */
+.image-section {
+  flex: 1 1 500px;
+  background-image: url("/src/assets/unnamed.png");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: center;
+  height: 100vh;
+  max-height: 700px;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(100px + 10px); /* Ajusta según el tamaño del logo + margen */
-  height: calc(100px + 10px);
+}
+
+.image-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: black;
+}
+
+.logo-container {
   background-color: white;
   border-radius: 50%;
   padding: 5px;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
-  width: 100px; /* Ajusta según el tamaño del logo */
+  width: 100px;
   height: auto;
 }
-/*body {
-  min-height: 0;
+
+.headline {
+  font-weight: bold;
+  margin: 2rem 0 1rem;
+  font-size: 1.5rem;
 }
 
-div {
-  padding: 0;
-  margin: 0;
+.description {
+  font-weight: bold;
+  margin: 1rem 0;
+  font-size: 1.2rem;
 }
 
-template {
-  padding: 0;
-  margin: 0;
-}*/
+/* Responsive */
 @media (max-width: 1010px) {
-  .image {
+  .image-section {
     display: none;
     visibility: hidden;
-  }
-}
-
-.cascading-right {
-  margin-right: -50px;
-}
-
-@media (max-width: 991.98px) {
-  .cascading-right {
-    margin-right: 0;
   }
 }
 </style>

@@ -1,127 +1,82 @@
 <template>
-  <div
-    class="bg-dark bg-gradient text-center shadow-1-strong rounded text-white"
-  >
-    <div class="d-flex col-md-6 mx-auto"></div>
+  <div class="profile-background">
+    <section class="profile-section">
+      <div class="profile-container">
+        <!-- Form section -->
+        <div class="form-wrapper">
+          <div class="glass-card">
+            <div class="card-body">
+              <h2 class="title">Profile</h2>
+              <p class="subtitle">"Good Tasks Only"</p>
 
-    <!-- Section: Design Block 1 -->
-    <section class="text-center text-lg-start p-5 mt-5">
-      <!-- Jumbotron -->
-      <div class="container py-4 mt-5">
-        <div class="row g-0 align-items-center">
-          <div class="col-lg-6 mb-5 mb-lg-0">
-            <div
-              class="card cascading-right"
-              style="
-                background: hsla(0, 0%, 100%, 0.55);
-                backdrop-filter: blur(30px);
-              "
-            >
-              <div class="card-body p-5 shadow-5 text-center">
-                <h2 class="fw-bold mb-4">Profile</h2>
-                <p class="mb-5 fw-bold text-warning">"Good Tasks Only"</p>
-
-                <form class="form-widget" @submit.prevent="LogInStore.updateProfile">
-                  <!-- First and last names: 2 column grid layout with text inputs -->
-                  <div class="row">
-                    <div class="col-md-6 mb-4">
-                      <div class="form-outline">
-                        <input
-                          type="text"
-                          id="form1Example1"
-                          class="form-control"
-                          v-model="LogInStore.username"
-                        />
-                        <label class="form-label" for="form1Example1"
-                          >First name</label
-                        >
-                      </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                      <div class="form-outline">
-                        <input
-                          type="text"
-                          id="form1Example2"
-                          class="form-control"
-                          v-model="LogInStore.website"
-                        />
-                        <label class="form-label" for="form1Example2"
-                          >Last name</label
-                        >
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Email input -->
-                  <div class="form-outline mb-4">
+              <form class="form-widget" @submit.prevent="LogInStore.updateProfile">
+                <div class="form-row">
+                  <div class="form-column">
                     <input
-                      type="email"
-                      placeholder="name@example.com"
-                      class="form-control"
-                      id="email"
-                      :value="LogInStore.user.email"
-                      disabled
+                      type="text"
+                      id="firstName"
+                      v-model="LogInStore.username"
+                      class="form-input"
                     />
-                    <label class="form-label" for="form1Example3"
-                      >Email address</label
-                    >
+                    <label class="form-label" for="firstName">First name</label>
                   </div>
+                  <div class="form-column">
+                    <input
+                      type="text"
+                      id="lastName"
+                      v-model="LogInStore.website"
+                      class="form-input"
+                    />
+                    <label class="form-label" for="lastName">Last name</label>
+                  </div>
+                </div>
 
-                  <!-- Submit button -->
-                  <button
-                    type="submit"
-                    class="btn btn-warning btn-block mb-4"
-                    :value="LogInStore.loading ? 'Loading' : 'Send magic link'"
-                    :disabled="LogInStore.loading"
-                  >
-                    Save
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
+                <div class="form-group">
+                  <input
+                    type="email"
+                    id="email"
+                    placeholder="name@example.com"
+                    class="form-input"
+                    :value="LogInStore.user.email"
+                    disabled
+                  />
+                  <label class="form-label" for="email">Email address</label>
+                </div>
 
-          <div
-            class="bg-img bg-image w-50 image rounded-4 shadow-4 col-lg-6 mb-5 mb-lg-0 align-items-center justify-content-center"
-            style="
-              background-image: url('/src/assets/unnamed.png');
-              height: 100vh;
-              width: 100vh;
-              background-size: auto 100%;
-              background-repeat: no-repeat;
-            "
-          >
-            <div class="bd-highlight d-flex flex-column align-items-center">
-              <!-- Contenedor circular para el logo -->
-              <div class="logo-container">
-                <img
-                  src="/src/assets/logocheckme.png"
-                  alt="CheckMe logo"
-                  class="logo"
-                />
-              </div>
-
-              <h1 class="fw-bold bd-highlight text-black text-center m-4">
-                Bringing a true feeling<br />
-                to your every day tasks.
-              </h1>
-              <h4 class="fw-bold text-center m-5">
-                Check.me organize your tasks <br />
-                in one easy-to-use app.
-              </h4>
+                <button
+                  type="submit"
+                  class="submit-button"
+                  :disabled="LogInStore.loading"
+                >
+                  Save
+                </button>
+              </form>
             </div>
           </div>
         </div>
+
+        <!-- Image section -->
+        <div class="image-section">
+          <div class="image-content">
+            <div class="logo-container">
+              <img src="/src/assets/logocheckme.png" alt="CheckMe logo" class="logo" />
+            </div>
+            <h1 class="headline">
+              Bringing a true feeling<br />
+              to your every day tasks.
+            </h1>
+            <h4 class="description">
+              Check.me organize your tasks <br />
+              in one easy-to-use app.
+            </h4>
+          </div>
+        </div>
       </div>
-      <!-- Jumbotron -->
     </section>
   </div>
 </template>
 
 <script>
-import { store } from "../stores/store";
-import { onMounted, ref } from "vue";
-import { onUpdated } from "vue";
 import { mapStores } from "pinia";
 import useLogInStore from "../stores/LogIn";
 
@@ -138,27 +93,172 @@ export default {
 };
 </script>
 
-<style>
-@media (max-width: 1010px) {
-  .image {
-    display: none;
-    visibility: hidden;
-  }
+<style scoped>
+/* General layout */
+.profile-background {
+  background-color: #1c1c1e;
+  color: white;
+  padding: 2rem;
 }
 
-.logo-container {
+.profile-section {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* Form section */
+.form-wrapper {
+  flex: 1 1 500px;
+  display: flex;
+  justify-content: center;
+}
+
+.glass-card {
+  background: hsla(0, 0%, 100%, 0.55);
+  backdrop-filter: blur(30px);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 500px;
+}
+
+.card-body {
+  text-align: center;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-weight: bold;
+  color: #ffc107;
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-input {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.form-label {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+/* Submit button */
+.submit-button {
+  background-color: #ffc107;
+  color: black;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s;
+}
+
+.submit-button:disabled {
+  background-color: #e0a800;
+  cursor: not-allowed;
+}
+
+/* Image section */
+.image-section {
+  flex: 1 1 500px;
+  background-image: url("/src/assets/unnamed.png");
+  background-repeat: no-repeat;
+  background-size: auto 100%;
+  background-position: center;
+  height: 100vh;
+  max-height: 700px;
+  border-radius: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc(100px + 10px); /* Ajusta según el tamaño del logo + margen */
-  height: calc(100px + 10px);
+}
+
+.image-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: black;
+}
+
+.logo-container {
   background-color: white;
   border-radius: 50%;
   padding: 5px;
+  width: 110px;
+  height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logo {
-  width: 100px; /* Ajusta según el tamaño del logo */
+  width: 100px;
   height: auto;
+}
+
+.headline {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin: 2rem 0 1rem;
+  color: white
+}
+
+.description {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin: 1rem 0;
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 1010px) {
+  .image-section {
+    display: none;
+    visibility: hidden;
+  }
+
+  .form-row {
+    flex-direction: column;
+  }
 }
 </style>
