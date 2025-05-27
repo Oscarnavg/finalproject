@@ -125,6 +125,7 @@ export default {
   padding: 2rem;
   width: 100%;
   max-width: 500px;
+  height: 480px;
 }
 
 .card-body {
@@ -222,12 +223,14 @@ export default {
   font-weight: bold;
   margin: 2rem 0 1rem;
   font-size: 1.5rem;
+  color: white;
 }
 
 .description {
   font-weight: bold;
   margin: 1rem 0;
   font-size: 1.2rem;
+  color: white;
 }
 
 /* Responsive */

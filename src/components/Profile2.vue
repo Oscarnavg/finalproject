@@ -131,6 +131,7 @@ export default {
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 500px;
+  height: 480px;
 }
 
 .card-body {

@@ -283,8 +283,8 @@ export default {
   margin: 0 auto;
 }
 .todo-card {
-  background-image: url("https://img.freepik.com/foto-gratis/textura-madera-pino_1194-5372.jpg?w=996");
-  background-size: auto 100%;
+  background-image: url(..//assets/Background-notes.png);
+  background-size: cover;
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
@@ -301,8 +301,9 @@ export default {
   margin-bottom: 1rem;
 }
 .title {
-  font-size: 2rem;
+  font-size: 2.3rem;
   margin-bottom: 1rem;
+  color: rgb(100, 96, 96);
 }
 
 /* Mantengo tus estilos anteriores de inputs y botón (por si hay otra parte que los use) */
@@ -342,7 +343,7 @@ export default {
 
 /* Nota blanca estilo post-it */
 .task-note {
-  background: #fff;
+  background: rgb(124, 141, 149);
   border-radius: 0.5rem;
   padding: 1rem;
   max-width: 400px;
@@ -351,8 +352,8 @@ export default {
 }
 .note-title {
   margin: 0 0 0.75rem;
-  font-size: 1.1rem;
-  color: #333;
+  font-size: 1.6rem;
+  color: rgb(165, 194, 196);
 }
 .note-input {
   border: 1px solid #ccc;
@@ -368,7 +369,7 @@ export default {
 }
 .action-button {
   align-self: flex-end;
-  background-color: #000;
+  background-color: #a4c2c7;
   color: #fff;
   border: none;
   border-radius: 0.5rem;
@@ -401,16 +402,25 @@ export default {
 }
 .pending-area {
   grid-area: pendiente;
-  background: #f8d7da;
+  background-color: rgba(248, 215, 218, 0.4); /* rosa claro con transparencia */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px); /* para compatibilidad con Safari */
 }
+
 .inprogress-area {
   grid-area: inprogress;
-  background: #fff3cd;
+  background-color: rgba(255, 243, 205, 0.4); /* amarillo claro con transparencia */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
+
 .done-area {
   grid-area: done;
-  background: #d4edda;
+  background-color: rgba(212, 237, 218, 0.4); /* verde claro con transparencia */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
+
 
 /* Tarjetas */
 .task-card {
@@ -424,6 +434,9 @@ export default {
   transform: rotate(-6deg);
   user-select: none;
   transition: box-shadow 0.2s ease;
+}
+h3 {
+  color: #68787a;
 }
 .task-card.dragging {
   cursor: grabbing;
