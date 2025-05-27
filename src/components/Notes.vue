@@ -6,7 +6,7 @@
           <!-- Header -->
           <div class="header">
             <img src="/src/assets/logocheckme.png" alt="Check" class="logo" />
-            <h2 class="title">Task List</h2>
+            <h2 class="title">Master Plan</h2>
           </div>
 
           <!-- Nota blanca central (post-it) -->
@@ -26,7 +26,7 @@
               class="note-input note-textarea"
             ></textarea>
             <button @click="saveTask" class="action-button">
-              {{ isEditing ? 'Actualizar tarea' : 'Crear tarea' }}
+              {{ isEditing ? 'Actualizar tarea' : 'Generar Tarea' }}
             </button>
           </div>
 
@@ -353,7 +353,7 @@ export default {
 .note-title {
   margin: 0 0 0.75rem;
   font-size: 1.6rem;
-  color: rgb(165, 194, 196);
+  color: rgb(229, 239, 240);
 }
 .note-input {
   border: 1px solid #ccc;
