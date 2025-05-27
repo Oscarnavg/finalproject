@@ -93,7 +93,7 @@
             <div
               class="bg-img bg-image w-50 rounded-4 shadow-4 col-lg-6 mb-5 mb-lg-0 d-flex align-items-center justify-content-center"
               style="
-                background-image: url('https://images.pexels.com/photos/7582013/pexels-photo-7582013.jpeg');
+                background-image: url('/src/assets/unnamed.png');
                 height: 100vh;
                 background-size: auto 100%;
                 background-repeat: no-repeat;
@@ -118,7 +118,7 @@
             <div
               class="bg-image w-50 rounded-4 shadow-4 col-lg-6 mb-5 mb-lg-0 d-flex align-items-center justify-content-center"
               style="
-                background-image: url('https://images.pexels.com/photos/7582013/pexels-photo-7582013.jpeg');
+                background-image: url('/src/assets/unnamed.png');
                 height: 100vh;
                 background-size: auto 100%;
                 background-repeat: no-repeat;

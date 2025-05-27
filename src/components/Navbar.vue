@@ -1,208 +1,182 @@
 <template>
-  <nav>
-      <div class="test" >
-          <img src="/src/assets/logocheckme.png">
-          <span>Check.me</span> 
-      </div>
-      <div class="ul-c">
-          <ul ref="nav">
-              <li class="links"
-              v-for="(link, index) in navLinks"
-              :key="index"
-              >
-              <router-link
-              :to="link.path"
-              >
-                  {{ link.text }}
-              </router-link>
-              </li>
-              <li v-if="store.user"><a class="pointer" @click="LogInStore.signOut()">Sign Out</a></li>
-          </ul>
-      </div>
-      <div class="hamburguer" @click="toggleNav">
-        <i class="fa fa-bars"></i>
-      </div>
-  </nav>    
-</template>
+    <header>
+        <nav class="navbar" :class="{active: showMenu}">
+            <img src="../assets/logocheckme.png">
+            <!--<a href="#" class="nav-branding">check.me</a>-->
 
+            <ul class="nav-menu" :class="{active: showMenu}" @click="showMenu = !showMenu">
+                <li class="nav-item" v-for="(link, index) in navLinks" :key="index">
+                    <router-link :to='link.path'>{{link.text}}</router-link>
+                </li>
+                <li class="nav-item pointer" v-if="store.user"><a @click="LogInStore.signOut()">Sign Out</a></li>
+            </ul>
+
+            <div class="hamburguer" :class="{active: showMenu}" @click="showMenu = !showMenu">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+</template>
 
 <script>
 import { supabase } from "../supabase/index";
 import { mapStores } from "pinia";
 import useLogInStore from '../stores/LogIn';
 import { store } from "../stores/store";
+import router from "../router/index"
+import { ref } from "vue";
+import { isPlainObject } from "@vue/shared";
 
 export default {
-  data(){
-    store.user = supabase.auth.user();
+    name: "NavBar",
+    data() {
+        store.user = supabase.auth.user();
         supabase.auth.onAuthStateChange((_, session) => {
             store.user = session.user;
         });
-        return {
-            store,
-        };
-  },
 
-  props: ['navLinks'],
-  
-  methods: {
-      toggleNav(){
-          const nav=this.$refs.nav.classList;
-          nav.contains('active') ? nav.remove('active') : nav.add('active');
-      }
-  },
-  computed: {
-    ...mapStores(useLogInStore),
-  },
+        return {
+            showMenu: false,
+            store,
+            navLinks: [
+            {
+                text: 'Home',
+                path: "/",
+            },
+            {
+                text: 'Notes',
+                path: '/notes',
+            },
+        ]
+        }
+    },
+
+    /*props: ['navLinks'],*/
+
+    /*methods: {
+        toggle() {
+            this.showMenu = !this.showMenu;
+        }
+    },*/
+    computed: {
+        ...mapStores(useLogInStore),
+    },
 };
 </script>
 
 
-<style lang="scss" scoped>
-.pointer{
-  cursor:pointer;
+<style scoped>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-nav {
-  display: flex;
-  background: whitesmoke;
-  height: 5rem;
-  box-shadow: 2px 2px 2px #CCC;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  nav, div {
-      &.test {
-              display: flex;
-              cursor: pointer;
-              justify-content: flex-start;
-              margin-left: 3rem;
-              align-content: center;
-      
-              img{
-                  height: 3.8rem;
-              }
-              span {
-                  display: flex;
-                  font-weight: 700;
-                  align-items: center;
-                  font-size: 1.5rem;
-              }
-          }
-  }
-  nav, div {
-  &.ul-c {
-      display: flex;
-      margin-right: 3rem;
-      justify-content: space-between;
-      ul{
-          display: flex;
-          height: 100%;
-          align-items: center;
-          margin: 0;
-          padding: 0;
-          gap: 1rem;
-          /*margin-right: 2rem;*/
-          flex-wrap: wrap;
-          justify-content: space-between;
-          
-          li{
-              display: flex;
-              list-style: none;
-              justify-content: space-between;
-          }
-          a{
-              text-decoration: none;
-              display: flex;
-              flex-direction: row-reverse;
-              color: black;
-              font-weight: 700;
-              
-          }
-          a:hover{
-              color:#ffc107;
-          }
-      }
-  }
-  }
+.pointer{
+    cursor: pointer;
+}
 
-  nav, div {
+header {
+    background-color: white;
+}
 
-    &.hamburguer {
+li {
+    list-style: none;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+.navbar {
+    min-height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 24px;
+}
+
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 60px;
+}
+
+.nav-branding {
+    font-size: 2rem;
+}
+
+.nav-link {
+    transition: 0.7s ease;
+}
+
+.nav-link:hover {
+    color: orangered
+}
+
+.hamburger {
+    visibility: hidden;
+}
+
+
+.bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    margin: 5px auto;
+    -webkit-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+    background-color: black;
+}
+
+@media(min-width: 1px) {
+    .hamburger {
+        display: block;
+        visibility: initial;
+    }
+
+    .hamburger.active .bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active .bar:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+    }
+
+    .hamburger.active .bar:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+
+    .nav-menu {
+        position: fixed;
+        left: -100%;
+        top: 70px;
+        gap: 0;
+        flex-direction: column;
+        background-color: white;
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+    }
+
+    .nav-item {
+        margin: 16px 0;
+    }
+
+    .nav-menu.active {
+        left: 0;
+    }
+
+    .navbar.active {
+        margin-bottom: 6rem !important;
+    }
+
+    .hide {
         display: none;
     }
-  }
-}
-@media screen and (max-width: 1010px) {
-  nav {
-      nav, div {
-          &.ul-c {
-              ul {
-                  display: flex;
-                  position: absolute;
-                  width: 50%;
-                  height: 25%;
-                  flex-direction: column;
-                  align-items: center;
-                  justify-content: center;
-                  left: 4400px;
-                  transition: .5s ease all;
-                  top:5rem;
-                  
-              
-                  &.active {
-                      background-color: black;
-                      top: 5rem;
-                      left: auto;
-                      right: 0rem;
-                      margin-right: 0;
-                      z-index: 99;
-                      
-                  }
-                  &.img-log {
-                      position: fixed;
-                      z-index: 99;
-                      top: 0px;
-                      left: 45px;
-                  }
-                  li {
-                      display: flex;
-                      width: 100%;
-                      flex: 0.5;
-                      justify-content: center;
-                  }
-                  li:hover{
-                      background-color: #ffc107;
-                      height: auto;
-                  }
-                  a {
-                      justify-content: center;                        
-                      color: white;
-                      align-items: center;
-                      
-                  }
-                  a:hover{
-                      color: black;
-                  }
-              }
-          }
-      }
-
-    nav, div {
-
-    &.hamburguer {
-        display: block;
-        margin-right: 3rem;
-        font-size: 1.9rem;
-
-    }
-
-    &.hamburguer:hover {
-        color: #ffc107;
-
-    }
-  }
-  }
-
 }
 </style>

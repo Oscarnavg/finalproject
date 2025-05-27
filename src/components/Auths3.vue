@@ -56,40 +56,32 @@
             </div>
 
             <div
-              class="
-                bg-img bg-image
-                w-50
-                rounded-4
-                shadow-4
-                col-lg-6
-                mb-5 mb-lg-0
-                image
-                align-items-center
-                justify-content-center
-              "
+              class="bg-img bg-image w-50 rounded-4 shadow-4 col-lg-6 mb-5 mb-lg-0 image align-items-center justify-content-center"
               style="
-                background-image: url('https://images.pexels.com/photos/7582013/pexels-photo-7582013.jpeg');
+                background-image:url('/src/assets/unnamed.png');
                 height: 100vh;
                 width: 100vh;
                 background-size: auto 100%;
                 background-repeat: no-repeat;
               "
             >
-              <div class="bd-highlight d-flex flex-column">
-                <div class="d-flex justify-content-end mt-4">
-                <img
-                  src="/src/assets/logocheckme.png"
-                  alt="CheckMe logo"
-                  class="h-25 mb-4"
-                />
+              <div class="bd-highlight d-flex flex-column align-items-center">
+                <!-- Nuevo contenedor circular para el logo -->
+                <div class="logo-container">
+                  <img
+                    src="/src/assets/logocheckme.png"
+                    alt="CheckMe logo"
+                    class="logo"
+                  />
                 </div>
+
                 <h1 class="fw-bold bd-highlight text-black text-center m-4">
                   Bringing a true feeling<br />
                   to your every day tasks.
                 </h1>
-                <h4 class="text-left fw-bold text-left text-center m-5">
+                <h4 class="fw-bold text-center m-5">
                   Check.me organize your tasks <br />
-                  in one easy to use app.
+                  in one easy-to-use app.
                 </h4>
               </div>
             </div>
@@ -136,6 +128,21 @@ export default {
 </script>
 
 <style>
+.logo-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(100px + 10px); /* Ajusta según el tamaño del logo + margen */
+  height: calc(100px + 10px);
+  background-color: white;
+  border-radius: 50%;
+  padding: 5px;
+}
+
+.logo {
+  width: 100px; /* Ajusta según el tamaño del logo */
+  height: auto;
+}
 /*body {
   min-height: 0;
 }
