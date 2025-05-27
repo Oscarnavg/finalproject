@@ -3,63 +3,128 @@
     <div class="todo-container">
       <div class="todo-card">
         <div class="card-body">
+          <!-- Header -->
           <div class="header">
             <img src="/src/assets/logocheckme.png" alt="Check" class="logo" />
             <h2 class="title">Task List</h2>
           </div>
 
-          <!-- Task input -->
-          <div class="task-inputs">
+          <!-- Nota blanca central (post-it) -->
+          <div class="task-note">
+            <h4 class="note-title">
+              {{ isEditing ? 'Editar tarea' : 'Crear nueva tarea' }}
+            </h4>
             <input
               v-model="ListStore.task"
               type="text"
-              placeholder="Ingrese tarea"
-              class="input input-task"
+              placeholder="Título de la tarea"
+              class="note-input"
             />
-            <input
+            <textarea
               v-model="ListStore.description"
-              type="text"
-              placeholder="Ingrese descripción"
-              class="input input-desc"
-            />
-          </div>
-          <div class="task-button-wrapper">
-            <button @click="ListStore.submitTask" class="submit-button">
-              Aceptar
+              placeholder="Descripción de la tarea"
+              class="note-input note-textarea"
+            ></textarea>
+            <button @click="saveTask" class="action-button">
+              {{ isEditing ? 'Actualizar tarea' : 'Crear tarea' }}
             </button>
           </div>
 
-          <!-- Tasks -->
+          <!-- Áreas droppables -->
           <div class="task-list drag-area">
-            <div
-              v-for="(task, index) in ListStore.tasksList"
-              :key="index"
-              class="task-card"
-              :class="{
-                pending: task.is_complete === 'Pendiente',
-                inprogress: task.is_complete === 'En Progreso',
-                done: task.is_complete === 'Terminada'
-              }"
-              :style="getStyle(task)"
-              @mousedown="startDrag($event, index)"
-            >
-              <div class="task-actions">
-                <span @click.stop="ListStore.editTask(index)" class="edit">✎</span>
-                <span @click.stop="ListStore.deleteTask(index)" class="delete">🗑️</span>
-              </div>
-
-              <h5 class="task-title">{{ task.title }}</h5>
-              <h6
-                @click="ListStore.changeStatus(index)"
-                class="task-status"
-                :class="{ finished: task.is_complete === 'Terminada' }"
+            <!-- Pendientes -->
+            <div class="drop-area pending-area" ref="pendingArea">
+              <h3>Pendientes</h3>
+              <div
+                v-for="task in pendingTasks"
+                :key="task.id"
+                class="task-card pending"
+                :class="{ dragging: dragging?.task.id === task.id }"
+                :style="getStyle(task, 'pendingArea')"
+                @mousedown="startDrag($event, task, 'pendingArea')"
               >
-                {{ task.is_complete }}
-              </h6>
-              <hr />
-              <p>{{ task.description }}</p>
+                <div class="task-actions">
+                  <span
+                    @click.stop="ListStore.editTask(taskIndex(task))"
+                    class="edit"
+                    >✎</span
+                  >
+                  <span @click.stop="deleteTaskKeep(task.id)" class="delete"
+                    >🗑️</span
+                  >
+                </div>
+                <h5 class="task-title">{{ task.title }}</h5>
+                <h6
+                  class="task-status"
+                  :class="{ finished: task.is_complete === 'Terminada' }"
+                  @click.stop="cycleStatus(task)"
+                >
+                  {{ task.is_complete }}
+                </h6>
+                <hr />
+                <p>{{ task.description }}</p>
+              </div>
+            </div>
+
+            <!-- En Progreso -->
+            <div class="drop-area inprogress-area" ref="inprogressArea">
+              <h3>En Progreso</h3>
+              <div
+                v-for="task in inProgressTasks"
+                :key="task.id"
+                class="task-card inprogress"
+                :class="{ dragging: dragging?.task.id === task.id }"
+                :style="getStyle(task, 'inprogressArea')"
+                @mousedown="startDrag($event, task, 'inprogressArea')"
+              >
+                <div class="task-actions">
+                  <span
+                    @click.stop="ListStore.editTask(taskIndex(task))"
+                    class="edit"
+                    >✎</span
+                  >
+                  <span @click.stop="deleteTaskKeep(task.id)" class="delete"
+                    >🗑️</span
+                  >
+                </div>
+                <h5 class="task-title">{{ task.title }}</h5>
+                <h6
+                  class="task-status"
+                  :class="{ finished: task.is_complete === 'Terminada' }"
+                  @click.stop="cycleStatus(task)"
+                >
+                  {{ task.is_complete }}
+                </h6>
+                <hr />
+                <p>{{ task.description }}</p>
+              </div>
+            </div>
+
+            <!-- Terminadas -->
+            <div class="drop-area done-area" ref="doneArea">
+              <h3>Completadas</h3>
+              <div
+                v-for="task in doneTasks"
+                :key="task.id"
+                class="task-card done"
+                :class="{ dragging: dragging?.task.id === task.id }"
+                :style="getStyle(task, 'doneArea')"
+                @mousedown="startDrag($event, task, 'doneArea')"
+              >
+                <div class="task-actions">
+                  <span @click.stop="deleteTaskKeep(task.id)" class="delete"
+                    >🗑️</span
+                  >
+                </div>
+                <h5 class="task-title">{{ task.title }}</h5>
+                <h6 class="task-status finished">{{ task.is_complete }}</h6>
+                <hr />
+                <p>{{ task.description }}</p>
+              </div>
             </div>
           </div>
+          <!-- /Áreas droppables -->
+
         </div>
       </div>
     </div>
@@ -74,69 +139,134 @@ export default {
   name: "ToDoList",
   data() {
     return {
-      draggingIndex: null,
+      dragging: null,
       offset: { x: 0, y: 0 },
     };
   },
   computed: {
     ...mapStores(useListStore),
+    pendingTasks() {
+      return this.ListStore.tasksList.filter(
+        (t) => t.is_complete === "Pendiente"
+      );
+    },
+    inProgressTasks() {
+      return this.ListStore.tasksList.filter(
+        (t) => t.is_complete === "En Progreso"
+      );
+    },
+    doneTasks() {
+      return this.ListStore.tasksList.filter(
+        (t) => t.is_complete === "Terminada"
+      );
+    },
+    isEditing() {
+      return this.ListStore.editedTask !== null;
+    },
   },
   methods: {
-    startDrag(e, index) {
-      this.draggingIndex = index;
-      const task = this.ListStore.tasksList[index];
-      if (!task.x) task.x = 0;
-      if (!task.y) task.y = 0;
+    taskIndex(task) {
+      return this.ListStore.tasksList.findIndex((t) => t.id === task.id);
+    },
+    async saveTask() {
+      await this.ListStore.submitTask();
+      this.loadPositions();
+    },
+    async deleteTaskKeep(id) {
+      await this.ListStore.deleteTask(id);
+      this.loadPositions();
+    },
+    startDrag(e, task, areaRef) {
+      this.dragging = { task, areaRef };
+      const areaRect = this.$refs[areaRef].getBoundingClientRect();
+      const elRect = e.currentTarget.getBoundingClientRect();
+      if (task.x == null || task.y == null) {
+        task.x = elRect.left - areaRect.left;
+        task.y = elRect.top - areaRect.top;
+      }
       this.offset = {
-        x: e.clientX - task.x,
-        y: e.clientY - task.y,
+        x: e.clientX - elRect.left,
+        y: e.clientY - elRect.top,
       };
       document.addEventListener("mousemove", this.onDrag);
       document.addEventListener("mouseup", this.stopDrag);
     },
     onDrag(e) {
-      if (this.draggingIndex === null) return;
-      const x = e.clientX - this.offset.x;
-      const y = e.clientY - this.offset.y;
-      const task = this.ListStore.tasksList[this.draggingIndex];
-      task.x = x;
-      task.y = y;
-      this.savePositions();
+      if (!this.dragging) return;
+      const { task, areaRef } = this.dragging;
+      const areaRect = this.$refs[areaRef].getBoundingClientRect();
+      task.x = e.clientX - areaRect.left - this.offset.x;
+      task.y = e.clientY - areaRect.top - this.offset.y;
     },
-    stopDrag() {
-      this.draggingIndex = null;
+    async stopDrag(e) {
+      if (!this.dragging) return;
+      const { task } = this.dragging;
+      const zones = {
+        Pendiente: this.$refs.pendingArea.getBoundingClientRect(),
+        "En Progreso": this.$refs.inprogressArea.getBoundingClientRect(),
+        Terminada: this.$refs.doneArea.getBoundingClientRect(),
+      };
+      for (let status in zones) {
+        const r = zones[status];
+        if (
+          e.clientX >= r.left &&
+          e.clientX <= r.right &&
+          e.clientY >= r.top &&
+          e.clientY <= r.bottom
+        ) {
+          if (task.is_complete !== status) {
+            await this.ListStore.changeStatusById(task.id, status);
+            task.is_complete = status;
+          }
+          task.x = e.clientX - r.left - this.offset.x;
+          task.y = e.clientY - r.top - this.offset.y;
+        }
+      }
+      localStorage.setItem(
+        "taskPositions",
+        JSON.stringify(
+          this.ListStore.tasksList.map((t) => ({
+            id: t.id,
+            x: t.x,
+            y: t.y,
+          }))
+        )
+      );
       document.removeEventListener("mousemove", this.onDrag);
       document.removeEventListener("mouseup", this.stopDrag);
+      this.dragging = null;
     },
-    getStyle(task) {
+    getStyle(task, areaRef) {
+      if (task.x == null || task.y == null) return {};
       return {
         position: "absolute",
-        left: (task.x || 0) + "px",
-        top: (task.y || 0) + "px",
-        zIndex: this.draggingIndex !== null ? 999 : 10,
+        left: task.x + "px",
+        top: task.y + "px",
         cursor: "grab",
+        zIndex: this.dragging?.task.id === task.id ? 1000 : 10,
       };
     },
-    savePositions() {
-      localStorage.setItem("taskPositions", JSON.stringify(this.ListStore.tasksList));
+    async cycleStatus(task) {
+      const idx = this.ListStore.statuses.indexOf(task.is_complete);
+      const next = this.ListStore.statuses[(idx + 1) % 3];
+      await this.ListStore.changeStatusById(task.id, next);
+      task.is_complete = next;
     },
     loadPositions() {
       const saved = localStorage.getItem("taskPositions");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        parsed.forEach((p, i) => {
-          if (this.ListStore.tasksList[i]) {
-            this.ListStore.tasksList[i].x = p.x || 0;
-            this.ListStore.tasksList[i].y = p.y || 0;
-          }
-        });
-      }
+      if (!saved) return;
+      JSON.parse(saved).forEach(({ id, x, y }) => {
+        const t = this.ListStore.tasksList.find((t) => t.id === id);
+        if (t) {
+          t.x = x;
+          t.y = y;
+        }
+      });
     },
   },
-  mounted() {
-    this.ListStore.CallData().then(() => {
-      this.loadPositions();
-    });
+  async mounted() {
+    await this.ListStore.CallData();
+    this.loadPositions();
   },
 };
 </script>
@@ -147,47 +277,41 @@ export default {
   padding: 3rem 1rem;
   min-height: 100vh;
   color: #fff;
-  position: relative;
 }
-
 .todo-container {
   max-width: 1100px;
   margin: 0 auto;
 }
-
 .todo-card {
-  background-image: url("https://img.freepik.com/foto-gratis/textura-madera-pino_1194-5372.jpg?w=996&t=st=1665239508~exp=1665240108~hmac=01e3b3673af429c47ba8181ecf8a725fb7e18ce3d3f6d8a5c9a6006094760b05");
+  background-image: url("https://img.freepik.com/foto-gratis/textura-madera-pino_1194-5372.jpg?w=996");
   background-size: auto 100%;
   border-radius: 1rem;
   padding: 2rem;
   box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+  overflow: visible;
   position: relative;
-  overflow: hidden;
 }
 
 .header {
   text-align: center;
   margin-bottom: 2rem;
 }
-
 .logo {
   width: 80px;
   margin-bottom: 1rem;
 }
-
 .title {
   font-size: 2rem;
   margin-bottom: 1rem;
 }
 
-/* Task Inputs */
+/* Mantengo tus estilos anteriores de inputs y botón (por si hay otra parte que los use) */
 .task-inputs {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   margin-bottom: 1rem;
 }
-
 .input-task,
 .input-desc {
   flex: 1 1 100%;
@@ -197,13 +321,11 @@ export default {
   font-size: 1rem;
   min-width: 220px;
 }
-
 .task-button-wrapper {
   display: flex;
   justify-content: center;
   margin-bottom: 2rem;
 }
-
 .submit-button {
   background-color: #ffc107;
   color: #212529;
@@ -214,21 +336,85 @@ export default {
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
-
 .submit-button:hover {
   background-color: #e0a800;
 }
 
-/* Task area */
-.task-list {
-  position: relative;
+/* Nota blanca estilo post-it */
+.task-note {
+  background: #fff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  max-width: 400px;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.note-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+.note-input {
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  font-size: 1rem;
   width: 100%;
-  height: 800px;
+  box-sizing: border-box;
+}
+.note-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.action-button {
+  align-self: flex-end;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-top: 0.5rem;
+}
+.action-button:hover {
+  opacity: 0.85;
 }
 
+/* Zonas droppables */
+.drag-area {
+  display: grid;
+  grid-template-areas:
+    "pendiente inprogress"
+    "done done";
+  grid-gap: 1rem;
+  min-height: 600px;
+  margin-top: 2rem;
+}
+.drop-area {
+  position: relative;
+  padding: 0.5rem;
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 0.5rem;
+  overflow: visible;
+}
+.pending-area {
+  grid-area: pendiente;
+  background: #f8d7da;
+}
+.inprogress-area {
+  grid-area: inprogress;
+  background: #fff3cd;
+}
+.done-area {
+  grid-area: done;
+  background: #d4edda;
+}
+
+/* Tarjetas */
 .task-card {
   width: 210px;
-  height: 210px;
   padding: 1rem;
   background: white;
   color: black;
@@ -239,13 +425,12 @@ export default {
   user-select: none;
   transition: box-shadow 0.2s ease;
 }
-
-.task-card:active {
+.task-card.dragging {
   cursor: grabbing;
-  z-index: 999;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
 }
 
+/* Botones de tarjeta */
 .task-actions {
   position: absolute;
   top: 0.5rem;
@@ -253,24 +438,21 @@ export default {
   display: flex;
   gap: 0.5rem;
 }
-
 .edit,
 .delete {
   cursor: pointer;
   font-size: 1.2rem;
 }
 
-/* Task colors by status */
+/* Colores según status */
 .pending {
   background-color: #dc3545;
   color: white;
 }
-
 .inprogress {
   background-color: #ffc107;
   color: white;
 }
-
 .done {
   background-color: #28a745;
   color: white;
@@ -281,19 +463,20 @@ export default {
   font-weight: bold;
   cursor: pointer;
 }
-
 .finished {
   text-decoration: line-through;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .task-inputs {
-    flex-direction: column;
+  .task-note {
+    max-width: 100%;
   }
-
-  .task-button-wrapper {
-    justify-content: center;
+  .drag-area {
+    grid-template-areas:
+      "pendiente"
+      "inprogress"
+      "done";
   }
 }
 </style>
