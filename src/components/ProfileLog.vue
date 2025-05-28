@@ -78,7 +78,7 @@
 
 <script>
 import { mapStores } from "pinia";
-import useLogInStore from "../stores/LogIn";
+import useLogInStore from "../stores/Login";
 
 export default {
   name: "Profile",

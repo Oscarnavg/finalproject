@@ -24,7 +24,7 @@
 <script>
 import { supabase } from "../supabase/index";
 import { mapStores } from "pinia";
-import useLogInStore from "../stores/LogIn";
+import useLogInStore from "../stores/Login";
 import { store } from "../stores/store";
 
 export default {

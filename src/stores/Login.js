@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { supabase } from '../supabase/index'
-import { store } from '../stores/store'
+import { store } from './store'
 import { onMounted, ref } from 'vue'
 
 export default defineStore("LogIn", {
