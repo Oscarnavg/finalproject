@@ -1,14 +1,15 @@
-import App from "../App.vue"
+
 import { createRouter, createWebHistory } from 'vue-router';
 import Notes from '../views/Notes.vue'
-import Auths3 from '../views/LogIn.vue'
+import Login from '../views/LogIn.vue'
 import Profile from '../views/Profile.vue'
+
  
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Auths3
+    component: Login
   },
   {
     path: '/notes',

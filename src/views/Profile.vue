@@ -1,12 +1,12 @@
 <template>
-  <Profile2></Profile2>
+  <ProfileLog></ProfileLog>
 </template>
 
 <script>
-import Profile2 from "../components/Profile2.vue";
+import ProfileLog from "../components/ProfileLog.vue";
 export default {
     components: {
-        Profile2,
+        ProfileLog,
     }
 
 }

@@ -1,12 +1,12 @@
 <template>
-    <Notes></Notes>
+    <NotesApp></NotesApp>
   </template>
   
   <script>
-  import Notes from "../components/Notes.vue";
+  import NotesApp from "../components/NotesApp.vue";
   export default {
       components: {
-          Notes,
+          NotesApp,
       }
   
   }

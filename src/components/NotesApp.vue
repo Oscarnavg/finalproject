@@ -341,6 +341,7 @@ export default {
   background-color: #e0a800;
 }
 
+
 /* Nota blanca estilo post-it */
 .task-note {
   background: rgb(124, 141, 149);
@@ -349,11 +350,14 @@ export default {
   max-width: 400px;
   margin: 0 auto 1.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  justify-content: center;
+  align-items: center;
 }
 .note-title {
   margin: 0 0 0.75rem;
   font-size: 1.6rem;
   color: rgb(229, 239, 240);
+  text-align: center;
 }
 .note-input {
   border: 1px solid #ccc;
@@ -368,7 +372,8 @@ export default {
   min-height: 80px;
 }
 .action-button {
-  align-self: flex-end;
+  display: block;              /* Hacer que ocupe toda la línea */
+  margin: 0.5rem auto 0;
   background-color: #a4c2c7;
   color: #fff;
   border: none;
@@ -414,6 +419,10 @@ export default {
   -webkit-backdrop-filter: blur(6px);
 }
 
+h3 {
+  color: rgb(110, 102, 102);
+}
+
 .done-area {
   grid-area: done;
   background-color: rgba(212, 237, 218, 0.4); /* verde claro con transparencia */
@@ -434,9 +443,6 @@ export default {
   transform: rotate(-6deg);
   user-select: none;
   transition: box-shadow 0.2s ease;
-}
-h3 {
-  color: #68787a;
 }
 .task-card.dragging {
   cursor: grabbing;

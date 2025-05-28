@@ -1,18 +1,19 @@
 <template>
-    <Profile2 v-if="store.user"></Profile2>
-    <Auths3 v-else></Auths3>
+    <ProfileLog v-if="store.user"></ProfileLog>
+    <AuthLogin v-else></AuthLogin>
 </template>
   
 <script>
 import { store } from "../stores/store";
-import Auths3 from "../components/Auths3.vue";
-import Profile2 from "../components/Profile2.vue";
+import AuthLogin from "../components/AuthLogIn.vue";
+import ProfileLog from "../components/ProfileLog.vue";
 import { supabase } from "../supabase/index";
+
 
 export default {
     components: {
-        Auths3,
-        Profile2,
+        AuthLogin,
+        ProfileLog,
     },
     setup() {
         store.user = supabase.auth.user();

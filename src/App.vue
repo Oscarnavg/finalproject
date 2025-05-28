@@ -1,9 +1,8 @@
 <template>
 
-<NavBar :nav-links="navLinks" />
+<GlobalNavbar :nav-links="navLinks" />
 <router-view :key="$route.path"></router-view>
-
-  <Footer></Footer>
+<GlobalFooter></GlobalFooter>
 
 </template>
 
@@ -11,23 +10,23 @@
 <script>
 import { store } from "./stores/store";
 import { supabase } from "./supabase/index";
-import NavBar from "./components/NavBar.vue";
-import Notes from "./components/Notes.vue";
+import GlobalNavbar from "./components/GlobalNavbar.vue";
+import NotesApp from "./components/NotesApp.vue";
 import router from './router/index.js';
-import Profile2 from "./components/Profile2.vue";
-import Footer from "./components/Footer.vue";
-import Auths3 from "./components/Auths3.vue";
+import ProfileLog from "./components/ProfileLog.vue";
+import GlobalFooter from "./components/GlobalFooter.vue";
+import AuthLogIn from "./components/AuthLogIn.vue";
 import swal from 'sweetalert';
-
 
 
 export default {
   components: {
-    NavBar,
-    Notes,
-    Profile2,
-    Footer,
-    Auths3,
+    GlobalNavbar,
+    ProfileLog,
+    NotesApp,
+    GlobalFooter,
+    AuthLogIn,
+    
 },
 
 data: () => ({
@@ -37,7 +36,7 @@ data: () => ({
       path:"/",
     },
     {
-      text:'Notes',
+      text:'NotesApp',
       path:'/notes',
     },
   ]
