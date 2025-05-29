@@ -3,7 +3,7 @@
 •	Descripción breve: Aplicación web para crear, editar, organizar y gestionar notas personales.
 •	Tecnologías utilizadas:
 o	Vue 3 + Vite
-o	Pinia (manejo de estado)
+o	Pinia (Estado entre componentes)
 o	Supabase (backend como servicio)
 o	SweetAlert (alertas personalizadas)
 o	CSS + Flexbox + Media Queries
@@ -28,6 +28,8 @@ ________________________________________
 •	Animación de apertura (3 barras → "X").
 •	Condición de sesión activa para mostrar “Sign Out”.
 •	Responsive con media queries.
+
+
 
 🔄 Drag and Drop (Arrastrar y soltar)
 js
