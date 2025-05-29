@@ -46,7 +46,7 @@
               to your every day tasks.
             </h1>
             <h4 class="description">
-              Check.me organize your tasks <br />
+              TriNotes organize your tasks <br />
               in one easy-to-use app.
             </h4>
           </div>
