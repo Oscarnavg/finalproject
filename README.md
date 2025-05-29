@@ -2,12 +2,12 @@
 •	Nombre del Proyecto: TriNotes
 •	Descripción breve: Aplicación web para crear, editar, organizar y gestionar notas personales.
 •	Tecnologías utilizadas:
-o	Vue 3 + Vite
-o	Pinia (Estado entre componentes)
-o	Supabase (backend como servicio)
-o	SweetAlert (alertas personalizadas)
-o	CSS + Flexbox + Media Queries
-o	LocalStorage (si aplica)
+•	Vue 3 + Vite
+•	Pinia (Estado entre componentes)
+•	Supabase (backend como servicio)
+•	SweetAlert (alertas personalizadas)
+•	CSS + Flexbox + Media Queries
+•	LocalStorage (si aplica)
 
 
 ________________________________________
@@ -98,7 +98,7 @@ CopiarEditar
   background-color: rgba(248, 215, 218, 0.4);
   backdrop-filter: blur(6px);
 }
-Importante: Cada zona (pendingArea, inprogressArea, doneArea) actúa como un "contenedor de caída", permitiendo cambiar el estado al soltar una tarea dentro de ellas.
+Cada zona (pendingArea, inprogressArea, doneArea) actúa como un "contenedor de caída", permitiendo cambiar el estado al soltar una tarea dentro de ellas.
 
 📒 NotesApp.vue
 •	Área de notas con:
@@ -133,7 +133,7 @@ ________________________________________
 •	Layout principal responsivo para escritorio y móviles.
 •	Scroll habilitado en menús móviles sin bloquear el body.
 ________________________________________
-🧪 6. Demostración rápida (si aplica)
+🧪  Demostración 
 •	Registrar / iniciar sesión.
 •	Crear nota, moverla, editarla.
 •	Cerrar sesión.
