@@ -146,10 +146,6 @@ o	Filtros por fecha, prioridad o estado.
 o	Tema oscuro.
 o	Notificaciones push (ej. recordatorios).
 ________________________________________
-🎞️ Tips para tu presentación oral:
-•	Muestra la animación del menú hamburguesa y explica cómo se hizo con @click, v-if y clases active.
-•	En el NotesApp, destaca lo visual: drag and drop, transparencia, cambio de estado.
-•	Muestra el código del App.vue para explicar cómo está organizado todo.
-•	Usa el navegador en modo responsive para mostrar la adaptación.
+
 
 
